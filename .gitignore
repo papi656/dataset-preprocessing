@@ -1,2 +1,5 @@
 datasets/*
 resources/*
+*.ipynb
+verify_correctness.py
+*.txt
