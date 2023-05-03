@@ -16,13 +16,15 @@ def create_mention_cui_dictionary(dataset, pmid_file, mention_dict_path, cui_dic
         for line in fh:
             if '\t' in line:
                 entities = line.split('\t')
+                if entities[1] == 'CID':
+                    continue
                 cuis_lst = []
-                if '|' in entities[-1]:
-                    cuis_lst = entities[-1].split('|')
-                if '+' in entities[-1]:
-                    cuis_lst = entities[-1].split('+')
+                if '|' in entities[5]:
+                    cuis_lst = entities[5].split('|')
+                if '+' in entities[5]:
+                    cuis_lst = entities[5].split('+')
                 if len(cuis_lst) == 0:
-                    cuis_lst = [entities[-1]]
+                    cuis_lst = [entities[5]]
                 if len(training_pmids) == 0:
                     mentions.add(entities[3].rstrip())
                     for c in cuis_lst:
