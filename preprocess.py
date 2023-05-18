@@ -152,8 +152,12 @@ def main():
 
     #for preprocessing the text
     preprocessor = textPreprocessing.TextPreprocess()
-
-    convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, args.dataset, args.processed_file_path)
+    dataset_name = (args.dataset).split('/')[1]
+    
+    if dataset_name == 'MedMentions':
+        convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, args.dataset, args.processed_file_path, is_medmention=True, pmid_file_path=args.pmid_file)
+    else:
+        convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, args.dataset, args.processed_file_path)
 
 if __name__ == '__main__':
     main()
