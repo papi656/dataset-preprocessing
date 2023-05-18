@@ -65,7 +65,7 @@ def main():
     parser.add_argument('--processed_file_path', type=str, required=True)
 
     args = parser.parse_args()
-
+    
     get_test_cui(args.dataset_path, args.test_data_path, args.processed_file_path, args.pmid_file)
 
 
