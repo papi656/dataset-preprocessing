@@ -7,6 +7,8 @@ import textPreprocessing
 
 #___________Approach 3 - Comparing text rather than position________
 
+special_sym = ['-', '+', '(', ')', '[', ']']
+# special_sym = ['-', '+', '(', ')']
 
 def convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, dataset, processed_file_path, is_medmention=False, pmid_file_path=""):
     # delete output file if it exists (needed as append used while writing to file)
@@ -40,13 +42,14 @@ def convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, dataset, process
                 parts = line.split('\t')
                 if len(parts) <= 4:
                     continue
-                tmp_str = ""
-                for i in range(3,len(parts)-2):
-                    if tmp_str == "":
-                        tmp_str += parts[i]
-                    else:
-                        tmp_str = tmp_str + ' ' + parts[i]
-                given_mentions.append(tmp_str)
+                # tmp_str = ""
+                # for i in range(3,len(parts)-2):
+                #     if tmp_str == "":
+                #         tmp_str += parts[i]
+                #     else:
+                #         tmp_str = tmp_str + ' ' + parts[i]
+                # given_mentions.append(tmp_str)
+                given_mentions.append(parts[3].strip())
             
             # when one t+a finished reading
             if len(line.strip()) == 0:
@@ -71,8 +74,24 @@ def convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, dataset, process
                     if len(sent.strip()) == 0:
                         tokenized_token.append(sent)
                         continue 
+                    words = sent.split(' ')
+                    new_sent = ""
+                    for word in words:
+                        new_word = word
+                        for sym in special_sym:
+                            if sym in new_word:
+                                pos = new_word.find(sym)
+                                new_word = new_word[:pos] + ' ' + new_word[pos] + ' ' + new_word[pos+1:]
+                        while len(new_word) > 0 and new_word[0] == ' ':
+                            new_word = new_word[1:]
+                        while len(new_word) > 0 and new_word[-1] == ' ':
+                            new_word = new_word[:-1]
+                        if len(new_sent) == 0:
+                            new_sent = new_word
+                        else:
+                            new_sent = new_sent + ' ' + new_word
 
-                    temp = tokenizer(sent)
+                    temp = tokenizer(new_sent)
 
                     for x in temp:
                         tokenized_token.append(str(x).strip())
@@ -92,6 +111,8 @@ def convert_dataset_to_BIO_format(nlp, tokenizer, preprocessor, dataset, process
                         our_len = 0
                         steps_count = 0
                         while our_len < m_len:
+                            if len(token_to_match) == 0 and tokenized_token[i].strip() == '.':
+                                break
                             if len(tokenized_token[i]) > 0 and len(mention) > 0 and preprocessor.run(tokenized_token[i][0].strip()) != preprocessor.run(mention[0].strip()):
                                 break
                             if i + itr >= len(tokenized_token):
