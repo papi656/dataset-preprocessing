@@ -5,7 +5,7 @@ def get_test_cui(dataset_path, test_data_path, processed_file_path, pmid_file=""
     # get the list of cuis in the datas0et
     pmid_lst = []
     # print(type(pmid_file))
-    if type(pmid_file) == 'str':
+    if pmid_file != 'empty':
         with open(pmid_file, 'r') as f:
             for line in f:
                 pmid_lst.append(line.strip())
@@ -61,7 +61,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset_path', type=str, required=True)
     parser.add_argument('--test_data_path', type=str, required=True)
-    parser.add_argument('--pmid_file', type=str, required=False)
+    parser.add_argument('--pmid_file', type=str, required=True)
     parser.add_argument('--processed_file_path', type=str, required=True)
 
     args = parser.parse_args()

@@ -8,14 +8,16 @@ python3 get_test_cui.py \
 
 echo "Creating test_cui.txt for BC5CDR"
 
-# python3 get_test_cui.py \
-#     --dataset_path datasets/BC5CDR/CDR.Corpus.v010516/CDR_TestSet.PubTator.txt \
-#     --test_data_path resources/BC5CDR/test.txt \
-#     --processed_file_path resources/BC5CDR/test_cuis.txt
+python3 get_test_cui.py \
+    --dataset_path datasets/BC5CDR/CDR.Corpus.v010516/CDR_TestSet.PubTator.txt \
+    --test_data_path resources/BC5CDR/test.txt \
+    --pmid_file  empty \
+    --processed_file_path resources/BC5CDR/test_cuis.txt
 
-# echo "Creating test_cui.txt for NCBI-disease"
+echo "Creating test_cui.txt for NCBI-disease"
 
-# python3 get_test_cui.py \
-#     --dataset_path datasets/NCBI_disease/NCBItestset_corpus.txt \
-#     --test_data_path resources/NCBI_disease/test.txt \
-#     --processed_file_path resources/NCBI_disease/test_cuis.txt
+python3 get_test_cui.py \
+    --dataset_path datasets/NCBI_disease/NCBItestset_corpus.txt \
+    --test_data_path resources/NCBI_disease/test.txt \
+    --pmid_file  empty \
+    --processed_file_path resources/NCBI_disease/test_cuis.txt
